@@ -26,7 +26,6 @@ public class Student {
 
 	public Student(Integer id, String name, String course, String collegeName, String password) {
 		super();
-		this.id = id;
 		this.name = name;
 		this.course = course;
 		this.collegeName = collegeName;

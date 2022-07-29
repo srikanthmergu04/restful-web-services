@@ -26,7 +26,6 @@ import com.java.rest.webservices.restfulwebservices.model.Student;
 import com.java.rest.webservices.restfulwebservices.service.StudentService;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 
 @RestController
 @RequestMapping("/students")

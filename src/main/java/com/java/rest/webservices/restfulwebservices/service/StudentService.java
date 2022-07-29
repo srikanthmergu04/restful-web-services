@@ -19,20 +19,20 @@ public class StudentService {
 	@Autowired
 	private StudentRepository studentRepository;
 
-	public Student saveStudent(Student user) {
+	public Student saveStudent(Student student) {
 
-		return studentRepository.save(user);
+		return studentRepository.save(student);
 
 	}
 
 	public Student getStudent(Integer id) {
-		Student user = studentRepository.findById(id).orElse(null);
+		Student student = studentRepository.findById(id).orElse(null);
 
-		if (user == null) {
+		if (student == null) {
 			throw new StudentNotFoundException("id-" + id);
 		}
 
-		return user;
+		return student;
 	}
 
 	public List<Student> getStudents() {

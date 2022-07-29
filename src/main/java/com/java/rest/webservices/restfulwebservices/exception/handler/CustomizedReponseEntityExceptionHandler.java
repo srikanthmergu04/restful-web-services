@@ -20,18 +20,8 @@ import com.java.rest.webservices.restfulwebservices.exception.response.Exception
 @RestController
 public class CustomizedReponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) throws Exception {
-
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
-				request.getDescription(false));
-
-		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
 	@ExceptionHandler({ UserNotFoundException.class, StudentNotFoundException.class })
-	public final ResponseEntity<Object> handleAllExceptions(UserNotFoundException ex, WebRequest request)
-			throws Exception {
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) throws Exception {
 
 		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false));
