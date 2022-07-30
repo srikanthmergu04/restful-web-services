@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.java.rest.webservices.restfulwebservices.exception.UserNotFoundException;
 import com.java.rest.webservices.restfulwebservices.model.User;
 import com.java.rest.webservices.restfulwebservices.repository.UserRepository;
 
@@ -20,7 +22,13 @@ public class UserService {
 	}
 
 	public User getUser(Integer id) {
-		return userRepository.findById(id).get();
+		User user = userRepository.findById(id).orElse(null);
+
+		if (user == null) {
+			throw new UserNotFoundException("id-" + id);
+		}
+
+		return user;
 	}
 
 	public List<User> getUsers() {
