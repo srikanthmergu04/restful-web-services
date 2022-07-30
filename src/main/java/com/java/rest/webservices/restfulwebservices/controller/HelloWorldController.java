@@ -17,8 +17,7 @@ public class HelloWorldController {
 	@GetMapping("/hello-world/{name}")
 	public Greeting greetingMsg(@PathVariable String name) {
 
-		Greeting greetingmsg = new Greeting();
-		greetingmsg.setMessage("Hello, " + name);
+		Greeting greetingmsg = new Greeting(name);
 		return greetingmsg;
 	}
 
