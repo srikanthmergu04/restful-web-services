@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.java.rest.webservices.restfulwebservices.model.Student;
 import com.java.rest.webservices.restfulwebservices.service.StudentService;
 
@@ -51,8 +55,20 @@ public class StudentController {
 	}
 
 	@GetMapping()
-	public List<Student> getStudents() {
-		return studentService.getStudents();
+	public MappingJacksonValue getStudents() {
+
+		List<Student> students = studentService.getStudents();
+
+		SimpleBeanPropertyFilter simpleBeanPropertyFilter = SimpleBeanPropertyFilter.filterOutAllExcept("name",
+				"course");
+
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("student-filter",
+				simpleBeanPropertyFilter);
+
+		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(students);
+		mappingJacksonValue.setFilters(filterProvider);
+
+		return mappingJacksonValue;
 	}
 
 	@DeleteMapping("/{id}")
