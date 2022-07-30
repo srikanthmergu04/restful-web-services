@@ -1,11 +1,13 @@
 package com.java.rest.webservices.restfulwebservices.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,6 +19,8 @@ public class User {
 	private Integer id;
 	private String name;
 	private Date dob;
+	@OneToMany(mappedBy = "user")
+	private List<Post> posts;
 
 	protected User() {
 	}
@@ -49,6 +53,14 @@ public class User {
 
 	public void setDob(Date dob) {
 		this.dob = dob;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
