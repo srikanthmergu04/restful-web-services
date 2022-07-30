@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Student {
 
@@ -14,16 +16,19 @@ public class Student {
 	private String name;
 	private String course;
 	private String collegeName;
+	@JsonIgnore
+	private String password;
 
 	protected Student() {
 	}
 
-	public Student(Integer id, String name, String course, String collegeName) {
+	public Student(Integer id, String name, String course, String collegeName, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.course = course;
 		this.collegeName = collegeName;
+		this.password = password;
 	}
 
 	public String getName() {
@@ -52,6 +57,14 @@ public class Student {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
