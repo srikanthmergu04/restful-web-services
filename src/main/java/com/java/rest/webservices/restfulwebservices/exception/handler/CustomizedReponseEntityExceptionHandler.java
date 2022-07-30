@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.java.rest.webservices.restfulwebservices.exception.StudentNotFoundException;
 import com.java.rest.webservices.restfulwebservices.exception.UserNotFoundException;
 import com.java.rest.webservices.restfulwebservices.exception.response.ExceptionResponse;
 
@@ -28,7 +29,7 @@ public class CustomizedReponseEntityExceptionHandler extends ResponseEntityExcep
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@ExceptionHandler(UserNotFoundException.class)
+	@ExceptionHandler({ UserNotFoundException.class, StudentNotFoundException.class })
 	public final ResponseEntity<Object> handleAllExceptions(UserNotFoundException ex, WebRequest request)
 			throws Exception {
 
