@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user_table")
@@ -17,7 +19,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	@Size(min = 2, message = "Name should have atlest 2 characters.")
 	private String name;
+	@Past(message = "date of birth should not be a future date.")
 	private Date dob;
 	@OneToMany(mappedBy = "user")
 	private List<Post> posts;
