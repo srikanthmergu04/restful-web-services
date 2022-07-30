@@ -3,6 +3,8 @@ package com.java.rest.webservices.restfulwebservices.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 
 import com.java.rest.webservices.restfulwebservices.exception.UserNotFoundException;
