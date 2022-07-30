@@ -25,6 +25,9 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.java.rest.webservices.restfulwebservices.model.Student;
 import com.java.rest.webservices.restfulwebservices.service.StudentService;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -44,14 +47,23 @@ public class StudentController {
 	}
 
 	@GetMapping("/{id}")
-	public EntityModel<Student> getStudent(@PathVariable Integer id) {
+	public MappingJacksonValue getStudent(@PathVariable Integer id) {
 		Student student = studentService.getStudent(id);
 		EntityModel<Student> studentEntity = EntityModel.of(student);
 
 		WebMvcLinkBuilder linkTo = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getStudents());
 		studentEntity.add(linkTo.withRel("all-students"));
 
-		return studentEntity;
+		SimpleBeanPropertyFilter simpleBeanPropertyFilter = SimpleBeanPropertyFilter.filterOutAllExcept("name",
+				"course");
+
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("student-filter",
+				simpleBeanPropertyFilter);
+
+		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(studentEntity);
+		mappingJacksonValue.setFilters(filterProvider);
+
+		return mappingJacksonValue;
 	}
 
 	@GetMapping()
@@ -75,6 +87,74 @@ public class StudentController {
 	public String deleteStudent(@PathVariable Integer id) {
 		studentService.deleteStudent(id);
 		return "Student Deleted";
+	}
+
+	// URI Versioning
+	@GetMapping("/V1")
+	public MappingJacksonValue getV1Students() {
+
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("id", "collegeName");
+
+		return mappingJacksonValue;
+	}
+
+	@GetMapping("/V2")
+	public MappingJacksonValue getV2Students() {
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("name", "course");
+
+		return mappingJacksonValue;
+	}
+
+	// Request Param Versioning
+	@GetMapping(params = "V=1")
+	public MappingJacksonValue getParamV1Students() {
+
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("id", "collegeName");
+
+		return mappingJacksonValue;
+	}
+
+	@GetMapping(params = "V=2")
+	public MappingJacksonValue getParamV2Students() {
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("name", "course");
+
+		return mappingJacksonValue;
+	}
+
+	// Header Versioning
+	@Hidden
+	@GetMapping(headers = "X-API-VERSION=1")
+	public MappingJacksonValue getHeaderV1Students() {
+
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("id", "collegeName");
+
+		return mappingJacksonValue;
+	}
+
+	@Hidden
+	@GetMapping(headers = "X-API-VERSION=2")
+	public MappingJacksonValue getHeaderV2Students() {
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("name", "course");
+
+		return mappingJacksonValue;
+	}
+
+	// Media Type Versioning
+	@Hidden
+	@GetMapping(produces = "application/vnd.company.app-v1+json")
+	public MappingJacksonValue getMediaTypeV1Students() {
+
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("id", "collegeName");
+
+		return mappingJacksonValue;
+	}
+
+	@Hidden
+	@GetMapping(produces = "application/vnd.company.app-v2+json")
+	public MappingJacksonValue getMediaTypeV2Students() {
+		MappingJacksonValue mappingJacksonValue = studentService.getFilteredStudents("name", "course");
+
+		return mappingJacksonValue;
 	}
 
 }
