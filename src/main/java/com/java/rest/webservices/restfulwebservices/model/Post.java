@@ -3,11 +3,13 @@ package com.java.rest.webservices.restfulwebservices.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Post {
@@ -22,8 +24,8 @@ public class Post {
 
 	private Date timestamp;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private User user;
 
 	protected Post() {
@@ -63,6 +65,14 @@ public class Post {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
